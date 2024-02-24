@@ -50,13 +50,15 @@ import com.example.reply.R
 import com.example.reply.data.Email
 import com.example.reply.data.MailboxType
 import com.example.reply.data.local.LocalAccountsDataProvider
+import com.example.reply.ui.utils.ReplyNavigationType
 
 @Composable
 fun ReplyHomeScreen(
+    navigationType: ReplyNavigationType,
     replyUiState: ReplyUiState,
-    onTabPressed: (MailboxType) -> Unit,
-    onEmailCardPressed: (Email) -> Unit,
-    onDetailScreenBackPressed: () -> Unit,
+    onTabPressed: (MailboxType) -> Unit = {},
+    onEmailCardPressed: (Email) -> Unit = {},
+    onDetailScreenBackPressed: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val navigationItemContentList = listOf(
@@ -88,6 +90,22 @@ fun ReplyHomeScreen(
         navigationItemContentList = navigationItemContentList,
         modifier = modifier
     )
+    if (replyUiState.isShowingHomepage) {
+        ReplyAppContent(
+            replyUiState = replyUiState,
+            onTabPressed = onTabPressed,
+            onEmailCardPressed = onEmailCardPressed,
+            navigationItemContentList = navigationItemContentList,
+            modifier = modifier
+
+        )
+    } else {
+        ReplyDetailsScreen(
+            replyUiState = replyUiState,
+            onBackPressed = onDetailScreenBackPressed,
+            modifier = modifier
+        )
+    }
 }
 
 @Composable
